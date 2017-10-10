@@ -38,19 +38,16 @@ scatter(zscore_data([51:100], 1), zscore_data([51:100], 4), 'filled');
 title('Sepal length vs. Petal width');
 
 subplot(3, 2, 4)
-hold on
 scatter(zscore_data([1:50], 2), zscore_data([1:50], 3))
 scatter(zscore_data(51:100, 2), zscore_data(51:100, 3), 'filled');
 title('Sepal width vs. Petal length');
 
 subplot(3, 2, 5)
-hold on
 scatter(zscore_data([1:50], 2), zscore_data([1:50], 4));
 scatter(zscore_data([51:100], 2), zscore_data([51:100], 4), 'filled');
 title('Sepal width vs. Petal width');
 
 subplot(3, 2, 6)
-hold on
 scatter(zscore_data([1:50], 3), zscore_data([1:50], 4));
 scatter(zscore_data([51:100], 3), zscore_data([51:100], 4), 'filled');
 title('Petal length vs. Petal width');
