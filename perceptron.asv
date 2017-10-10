@@ -27,18 +27,14 @@ end
 % + is label 1: iris-versicolor
 w = zeros(4, 1);
 alpha = 0.5;
-
-for j=1:100
-    for i=1:100
-        input_vec = data(i, :);
-        dot_prod = input_vec * w;
-        prediction = 0;
-        if dot_prod > 0
-            prediction = 1;
-        end
-        w = w + alpha * (labels(i) - prediction) * input_vec;
+for i=1:100
+    input_vec = data(i, :);
+    dot_prod = input_vec * w;
+    prediction = 0;
+    if dot_prod > 0
+        prediction = 1;
     end
-    display(w)
+    w = w + alpha * (labels(i) - prediction) * input_vec;
 end
 
 output = zeros(100, 1);
