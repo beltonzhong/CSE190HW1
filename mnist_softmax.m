@@ -22,20 +22,20 @@ for i=1:10
 end
 
 w = ones(785, 10);
-alpha = .01;
+alpha = .05;
 numEpochs = 50;
 errorRates = zeros(50, 1);
 for i=1:numEpochs
-    g0 = w(:, 1)' * images;
-    g1 = w(:, 2)' * images;
-    g2 = w(:, 3)' * images;
-    g3 = w(:, 4)' * images;
-    g4 = w(:, 5)' * images;
-    g5 = w(:, 6)' * images;
-    g6 = w(:, 7)' * images;
-    g7 = w(:, 8)' * images;
-    g8 = w(:, 9)' * images;
-    g9 = w(:, 10)' * images;
+    g0 = exp(w(:, 1)' * images);
+    g1 = exp(w(:, 2)' * images);
+    g2 = exp(w(:, 3)' * images);
+    g3 = exp(w(:, 4)' * images);
+    g4 = exp(w(:, 5)' * images);
+    g5 = exp(w(:, 6)' * images);
+    g6 = exp(w(:, 7)' * images);
+    g7 = exp(w(:, 8)' * images);
+    g8 = exp(w(:, 9)' * images);
+    g9 = exp(w(:, 10)' * images);
     gs = g0 + g1 + g2 + g3 + g4 + g5 + g6 + g7 + g8 + g9;
     h0 = g0 ./ gs;
     h1 = g1 ./ gs;
@@ -62,7 +62,7 @@ for i=1:numEpochs
         c = predictions1(:, j);
         c = c';
         gradient = sum(images .* c, 2);
-        w(:, j) = w(:, j) + alpha * gradient;
+        w(:, j) = w(:, j) - alpha * gradient;
     end
 end
 
@@ -72,16 +72,16 @@ scatter([1:50], errorRates);
 testcorrect = 0;
 for i=1:2000
     input = testimages(:, i);
-    g0 = w(:, 1)' * input;
-    g1 = w(:, 2)' * input;
-    g2 = w(:, 3)' * input;
-    g3 = w(:, 4)' * input;
-    g4 = w(:, 5)' * input;
-    g5 = w(:, 6)' * input;
-    g6 = w(:, 7)' * input;
-    g7 = w(:, 8)' * input;
-    g8 = w(:, 9)' * input;
-    g9 = w(:, 10)' * input;
+    g0 = exp(w(:, 1)' * input);
+    g1 = exp(w(:, 2)' * input);
+    g2 = exp(w(:, 3)' * input);
+    g3 = exp(w(:, 4)' * input);
+    g4 = exp(w(:, 5)' * input);
+    g5 = exp(w(:, 6)' * input);
+    g6 = exp(w(:, 7)' * input);
+    g7 = exp(w(:, 8)' * input);
+    g8 = exp(w(:, 9)' * input);
+    g9 = exp(w(:, 10)' * input);
     gs = g0 + g1 + g2 + g3 + g4 + g5 + g6 + g7 + g8 + g9;
     h0 = g0 / gs;
     h1 = g1 / gs;
