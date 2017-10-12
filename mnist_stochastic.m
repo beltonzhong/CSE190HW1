@@ -24,46 +24,52 @@ end
 w = ones(785, 10);
 alpha = .05;
 numEpochs = 50;
-errorRates = zeros(50, 1);
+errorRates = zeros(1, 50);
 for i=1:numEpochs
-    g0 = exp(w(:, 1)' * images);
-    g1 = exp(w(:, 2)' * images);
-    g2 = exp(w(:, 3)' * images);
-    g3 = exp(w(:, 4)' * images);
-    g4 = exp(w(:, 5)' * images);
-    g5 = exp(w(:, 6)' * images);
-    g6 = exp(w(:, 7)' * images);
-    g7 = exp(w(:, 8)' * images);
-    g8 = exp(w(:, 9)' * images);
-    g9 = exp(w(:, 10)' * images);
-    gs = g0 + g1 + g2 + g3 + g4 + g5 + g6 + g7 + g8 + g9;
-    h0 = g0 ./ gs;
-    h1 = g1 ./ gs;
-    h2 = g2 ./ gs;
-    h3 = g3 ./ gs;
-    h4 = g4 ./ gs;
-    h5 = g5 ./ gs;
-    h6 = g6 ./ gs;
-    h7 = g7 ./ gs;
-    h8 = g8 ./ gs;
-    h9 = g9 ./ gs;
-    
-    g = [h0;h1;h2;h3;h4;h5;h6;h7;h8;h9];
-    [values indices] = max(g);
-    predictions = indices' - 1;
-    correct = sum(labels == predictions);
-    errorRates(i) = correct / 200;
-    predictions1hot = zeros(20000, 10);
-    for j=1:10
-        predictions1hot(predictions == j - 1, j) = 1;
+    correct = 0;
+    p = randperm(20000);
+    for j=1:20000
+        image = images(:, p(j));
+        g0 = exp(w(:, 1)' * image);
+        g1 = exp(w(:, 2)' * image);
+        g2 = exp(w(:, 3)' * image);
+        g3 = exp(w(:, 4)' * image);
+        g4 = exp(w(:, 5)' * image);
+        g5 = exp(w(:, 6)' * image);
+        g6 = exp(w(:, 7)' * image);
+        g7 = exp(w(:, 8)' * image);
+        g8 = exp(w(:, 9)' * image);
+        g9 = exp(w(:, 10)' * image);
+        gs = g0 + g1 + g2 + g3 + g4 + g5 + g6 + g7 + g8 + g9;
+        h0 = g0 ./ gs;
+        h1 = g1 ./ gs;
+        h2 = g2 ./ gs;
+        h3 = g3 ./ gs;
+        h4 = g4 ./ gs;
+        h5 = g5 ./ gs;
+        h6 = g6 ./ gs;
+        h7 = g7 ./ gs;
+        h8 = g8 ./ gs;
+        h9 = g9 ./ gs;
+
+        g = [h0;h1;h2;h3;h4;h5;h6;h7;h8;h9];
+        [values indices] = max(g);
+        predictions = indices' - 1;
+        label = labels(p(j));
+        correct = correct + (label == predictions);
+        teachingLabel = labels1hot(p(j), :);
+        predictions1hot = zeros(1, 10);
+        for k=1:10
+            predictions1hot(predictions == k - 1, k) = 1;
+        end
+        predictions1 = teachingLabel - predictions1hot;
+        for k=1:10
+            c = predictions1(:, k);
+            gradient = image * c;
+            w(:, k) = w(:, k) - alpha * gradient;
+        end
     end
-    predictions1 = labels1hot - predictions1hot;
-    for j=1:10
-        c = predictions1(:, j);
-        c = c';
-        gradient = sum(images .* c, 2);
-        w(:, j) = w(:, j) - alpha * gradient;
-    end
+    errorRates(1, i) = (20000 - correct) / 200;
 end
 
 figure
